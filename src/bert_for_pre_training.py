@@ -84,7 +84,7 @@ class GetMaskedLMOutput(nn.Cell):
         self.output_bias = Parameter(
             initializer(
                 'zero',
-                config.vocab_size))
+                config.vocab_size), name="pretraining1")
         self.matmul = P.MatMul(transpose_b=True)
         self.log_softmax = nn.LogSoftmax(axis=-1)
         self.shape_flat_offsets = (-1, 1)
@@ -358,7 +358,7 @@ class BertTrainOneStepWithLossScaleCell(nn.Cell):
         self.loss_scale = None
         self.loss_scaling_manager = scale_update_cell
         if scale_update_cell:
-            self.loss_scale = Parameter(Tensor(scale_update_cell.get_loss_scale(), dtype=mstype.float32))
+            self.loss_scale = Parameter(Tensor(scale_update_cell.get_loss_scale(), dtype=mstype.float32), name="pretraining2")
 
     @C.add_flags(has_effect=True)
     def construct(self,
@@ -463,10 +463,10 @@ class BertTrainAccumulateStepsWithLossScaleCell(nn.Cell):
         self.enable_global_norm = enable_global_norm
         self.one = Tensor(np.array([1]).astype(np.int32))
         self.zero = Tensor(np.array([0]).astype(np.int32))
-        self.local_step = Parameter(initializer(0, [1], mstype.int32))
+        self.local_step = Parameter(initializer(0, [1], mstype.int32), name="pretraining3")
         self.accu_grads = self.weights.clone(prefix="accu_grads", init='zeros')
-        self.accu_overflow = Parameter(initializer(0, [1], mstype.int32))
-        self.accu_loss = Parameter(initializer(0, [1], mstype.float32))
+        self.accu_overflow = Parameter(initializer(0, [1], mstype.int32), name="pretraining4")
+        self.accu_loss = Parameter(initializer(0, [1], mstype.float32), name="pretraining5")
 
         self.grad = C.GradOperation(get_by_list=True, sens_param=True)
         self.reducer_flag = False
@@ -497,7 +497,7 @@ class BertTrainAccumulateStepsWithLossScaleCell(nn.Cell):
         self.loss_scale = None
         self.loss_scaling_manager = scale_update_cell
         if scale_update_cell:
-            self.loss_scale = Parameter(Tensor(scale_update_cell.get_loss_scale(), dtype=mstype.float32))
+            self.loss_scale = Parameter(Tensor(scale_update_cell.get_loss_scale(), dtype=mstype.float32), name="pretraining6")
 
     @C.add_flags(has_effect=True)
     def construct(self,

@@ -14,23 +14,12 @@
 # limitations under the License.
 # ============================================================================
 
-echo "=============================================================================================================="
-echo "Please run the scipt as: "
-echo "bash run_distributed_pretrain.sh DEVICE_NUM EPOCH_SIZE DATA_DIR SCHEMA_DIR"
-echo "for example: bash run_distributed_pretrain.sh 8 40 /path/zh-wiki/ /path/Schema.json"
-echo "It is better to use absolute path."
-echo "=============================================================================================================="
-
-RANK_SIZE=$1
-EPOCH_SIZE=$2
-DATA_DIR=$3
-SCHEMA_DIR=$4
-
-mpirun --allow-run-as-root -n $RANK_SIZE --output-filename log_output --merge-stderr-to-stdout \
+/usr/local/openmpi-3.1.5/bin/mpirun --allow-run-as-root -n 5 --output-filename log_output --merge-stderr-to-stdout \
+	-H gpu9-docker:2,gpu11-docker:3		\
 	python run_pretrain.py				\
 		--device_target="GPU"			\
 		--distribute="true"				\
-		--epoch_size=$EPOCH_SIZE		\
+		--epoch_size=1		\
 		--enable_save_ckpt="true"		\
 		--enable_lossscale="false"		\
 		--do_shuffle="true"				\
@@ -39,6 +28,6 @@ mpirun --allow-run-as-root -n $RANK_SIZE --output-filename log_output --merge-st
 		--load_checkpoint_path=""			\
 		--save_checkpoint_steps=10000	\
 		--save_checkpoint_num=1			\
-		--data_dir=$DATA_DIR			\
-		--schema_dir=$SCHEMA_DIR > log.txt 2>&1 &
+		--data_dir="/data/bert/zhwiki-tf-record"	\
+		# --schema_dir=$SCHEMA_DIR > log.txt 2>&1 &
 

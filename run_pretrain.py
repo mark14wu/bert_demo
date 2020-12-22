@@ -36,6 +36,9 @@ from src import BertNetworkWithLoss, BertTrainOneStepCell, BertTrainOneStepWithL
 from src.dataset import create_bert_dataset
 from src.config import cfg, bert_net_cfg
 from src.utils import LossCallBack, BertLearningRate
+
+from mindspore.common.api import _executor
+
 _current_dir = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -203,6 +206,8 @@ def run_pretrain():
     model = Model(net_with_grads)
     model.train(new_repeat_count, ds, callbacks=callback,
                 dataset_sink_mode=(args_opt.enable_data_sink == "true"), sink_size=args_opt.data_sink_steps)
+
+    open("bert_4gpu.txt", "w").write(str(_executor._get_shard_strategy(model._train_network)))
 
 
 if __name__ == '__main__':

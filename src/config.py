@@ -19,7 +19,7 @@ from easydict import EasyDict as edict
 import mindspore.common.dtype as mstype
 from .bert_model import BertConfig
 cfg = edict({
-    'batch_size': 32,
+    'batch_size': 1,
     'bert_network': 'base',
     'loss_scale_value': 65536,
     'scale_factor': 2,
@@ -33,13 +33,13 @@ cfg = edict({
         'weight_decay': 1e-5,
         'decay_filter': lambda x: 'layernorm' not in x.name.lower() and 'bias' not in x.name.lower(),
         'eps': 1e-6,
-        'warmup_steps': 10000,
+        'warmup_steps': 1,
     }),
     'Lamb': edict({
         'learning_rate': 3e-5,
         'end_learning_rate': 0.0,
         'power': 10.0,
-        'warmup_steps': 10000,
+        'warmup_steps': 1,
         'weight_decay': 0.01,
         'decay_filter': lambda x: 'layernorm' not in x.name.lower() and 'bias' not in x.name.lower(),
         'eps': 1e-6,
@@ -57,7 +57,7 @@ large: BERT-NEZHA(a Chinese pretrained language model developed by Huawei, which
        Functional Relative Posetional Encoding as an effective positional encoding scheme).
 '''
 if cfg.bert_network == 'base':
-    cfg.batch_size = 64
+    cfg.batch_size = 1
     bert_net_cfg = BertConfig(
         seq_length=128,
         vocab_size=21128,
