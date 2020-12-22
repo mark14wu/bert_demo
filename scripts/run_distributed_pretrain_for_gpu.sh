@@ -16,6 +16,7 @@
 
 /usr/local/openmpi-3.1.5/bin/mpirun --allow-run-as-root -n 5 --output-filename log_output --merge-stderr-to-stdout \
 	-H gpu9-docker:2,gpu11-docker:3		\
+	--mca btl_tcp_if_include ens11f0	\
 	python run_pretrain.py				\
 		--device_target="GPU"			\
 		--distribute="true"				\
