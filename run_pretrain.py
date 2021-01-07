@@ -141,8 +141,8 @@ def run_pretrain():
         ckpt_save_dir = args_opt.save_checkpoint_path + 'ckpt_' + str(get_rank()) + '/'
 
         context.reset_auto_parallel_context()
-        context.set_auto_parallel_context(parallel_mode=ParallelMode.DATA_PARALLEL, gradients_mean=True,
-                                          device_num=device_num)
+        context.set_auto_parallel_context(parallel_mode=ParallelMode.AUTO_PARALLEL, gradients_mean=True,
+                                          device_num=device_num, auto_parallel_search_mode="recursive_programming")
         _set_bert_all_reduce_split()
     else:
         rank = 0
