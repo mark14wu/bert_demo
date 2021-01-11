@@ -18,7 +18,7 @@
 	# --mca btl_tcp_if_include ens11f0	\
 
 
-/usr/local/openmpi-3.1.5/bin/mpirun --allow-run-as-root -n 3 --mca btl_tcp_if_include ens11f0 -H gpu11-docker:3 --output-filename log_output --merge-stderr-to-stdout \
+/usr/local/openmpi-4.0.3/bin/mpirun --allow-run-as-root -n 3 --mca btl_tcp_if_include ens11f0 -H gpu11-docker:3 --output-filename log_output --merge-stderr-to-stdout \
 	python run_pretrain.py				\
 		--device_target="GPU"			\
 		--distribute="true"				\
@@ -33,5 +33,5 @@
 		--save_checkpoint_steps=10000	\
 		--save_checkpoint_num=1			\
 		--data_dir="/data/bert/zhwiki-tf-record"	\
-		> log.txt 2>&1 &
+		# > log.txt 2>&1 &
 
