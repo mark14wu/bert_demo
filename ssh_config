@@ -1,0 +1,14 @@
+Host gpu3-docker
+  Hostname 192.168.1.43
+  User root
+  Port 12345
+
+Host gpu9-docker
+  Hostname 192.168.1.49
+  User root
+  Port 12345
+
+Host gpu11-docker
+  Hostname 192.168.1.51
+  User root
+  Port 12345
